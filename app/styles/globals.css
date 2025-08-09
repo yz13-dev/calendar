@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@import "@yz13/ui/globals.css";
+
+@source "../../node_modules/@yz13/ui";
+
+
+.font-pixel {
+  font-family: var(--font-pixel), sans-serif;
+}
+
+.inter-sans {
+  --font-sans: "Inter", sans-serif;
+  /* font-family: "Inter", sans-serif; */
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.pixelify-sans {
+  --font-pixel: "Pixelify Sans", sans-serif;
+  /* font-family: "Pixelify Sans", sans-serif; */
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+
+
+.jetbrains-mono {
+  --font-mono: "JetBrains Mono", monospace;
+  /* font-family: "JetBrains Mono", monospace; */
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
