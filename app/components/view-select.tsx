@@ -1,5 +1,5 @@
 import views from "@/const/views";
-import { Select, SelectContent, SelectItem, SelectTrigger } from "@yz13/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@yz13/ui/select";
 import { useQueryState } from "nuqs";
 
 
@@ -11,7 +11,9 @@ export default function () {
 
   return (
     <Select value={view ?? undefined} onValueChange={setView}>
-      <SelectTrigger>Вид</SelectTrigger>
+      <SelectTrigger className="min-w-28">
+        <SelectValue />
+      </SelectTrigger>
       <SelectContent>
         {
           views
