@@ -1,3 +1,6 @@
+import AppSidebar from "@/components/app-sidebar";
+import FullscreenCalendar from "@/components/fullscreen-calendar";
+import { SidebarProvider } from "@yz13/ui/sidebar";
 import type { Route } from "./+types/page";
 
 export function meta({ }: Route.MetaArgs) {
@@ -9,8 +12,11 @@ export function meta({ }: Route.MetaArgs) {
 
 export default function Home() {
   return (
-    <div className="w-full h-dvh flex items-center justify-center">
-      <h1 className="text-9xl font-semibold font-pixel">YZ13</h1>
-    </div>
+    <SidebarProvider>
+      <AppSidebar />
+      <div className="w-[calc(100%-var(--sidebar-width))] h-dvh">
+        <FullscreenCalendar />
+      </div>
+    </SidebarProvider>
   )
 }
