@@ -8,6 +8,7 @@ import {
 } from "react-router";
 
 import "@/styles/globals.css";
+import { NuqsAdapter } from "nuqs/adapters/react-router/v7";
 import type { Route } from "./+types/root";
 
 export const links: Route.LinksFunction = () => [
@@ -46,7 +47,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body className="inter-sans pixelify-sans jetbrains-mono">
-        {children}
+        <NuqsAdapter>
+          {children}
+        </NuqsAdapter>
         <ScrollRestoration />
         <Scripts />
       </body>
