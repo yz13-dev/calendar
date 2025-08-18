@@ -4,6 +4,9 @@
 
 @source "../../node_modules/@yz13/ui";
 
+body {
+  --header-height: 56px;
+}
 
 .font-pixel {
   font-family: var(--font-pixel), sans-serif;

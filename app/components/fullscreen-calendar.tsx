@@ -25,7 +25,7 @@ export default function () {
 
   return (
     <>
-      <div className="w-full h-10 grid grid-cols-7 divide-x border-b *:p-2">
+      <div className="w-full h-10 grid grid-cols-7 divide-x border-b *:py-2 *:px-4">
         <div>Пн</div>
         <div>Вт</div>
         <div>Ср</div>
@@ -34,7 +34,7 @@ export default function () {
         <div>Сб</div>
         <div>Вс</div>
       </div>
-      <div className="w-full grid grid-cols-7 h-[calc(100%-40px)] divide-x divide-y">
+      <div className="w-full grid grid-cols-7 h-[calc(100%-40px-var(--header-height))] divide-x divide-y">
         {
           interval
             .map(date => {
@@ -44,7 +44,7 @@ export default function () {
 
               return (
                 <div className="w-full h-full divide-y">
-                  <div className="h-8 p-1 flex items-center gap-1">
+                  <div className="h-8 py-1 px-3 flex items-center gap-1">
                     <div className={cn(
                       "h-full aspect-square flex items-center justify-center rounded-[4px] text-sm",
                       today ? "bg-foreground" : "bg-transparent"
