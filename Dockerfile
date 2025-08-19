@@ -1,22 +1,40 @@
-FROM node:20-alpine AS development-dependencies-env
-COPY . /app
-WORKDIR /app
-RUN npm ci
+# Используем официальный образ Bun
+FROM oven/bun:1.2.18 as base
 
-FROM node:20-alpine AS production-dependencies-env
-COPY ./package.json package-lock.json /app/
+# Устанавливаем рабочую директорию
 WORKDIR /app
-RUN npm ci --omit=dev
 
-FROM node:20-alpine AS build-env
-COPY . /app/
-COPY --from=development-dependencies-env /app/node_modules /app/node_modules
-WORKDIR /app
-RUN npm run build
+# Копируем файлы зависимостей
+COPY package.json bun.lock ./
 
-FROM node:20-alpine
-COPY ./package.json package-lock.json /app/
-COPY --from=production-dependencies-env /app/node_modules /app/node_modules
-COPY --from=build-env /app/build /app/build
+# Устанавливаем зависимости
+RUN bun install
+
+# Копируем исходный код
+COPY . .
+
+# Создаем production образ
+FROM base as production
+
+# Собираем приложение
+RUN bun run build
+
+# Создаем минимальный runtime образ
+FROM base as runtime
+
 WORKDIR /app
-CMD ["npm", "run", "start"]
+
+# Копируем standalone сборку из production образа
+COPY --from=production /app/package.json ./
+COPY --from=production /app/node_modules ./node_modules
+COPY --from=production /app/build ./build
+
+# Открываем порт (Yandex Cloud использует 8080)
+EXPOSE 8080
+
+# Устанавливаем переменную окружения
+ENV NODE_ENV=production
+ENV PORT=8080
+
+# Запускаем приложение
+CMD ["bun", "run", "start"]
