@@ -16,6 +16,8 @@ COPY . .
 # Создаем production образ
 FROM base as production
 
+ENV VITE_APP_ENV="https://calendar.yz13.ru"
+
 # Собираем приложение
 RUN bun run build
 
