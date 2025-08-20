@@ -6,6 +6,7 @@ import { Skeleton } from "@yz13/ui/skeleton";
 import { cn } from "@yz13/ui/utils";
 import { ChevronDownIcon, LogInIcon, LogOutIcon } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router";
 
 
 
@@ -15,9 +16,11 @@ export default function () {
   const [open, setOpen] = useState(false);
 
   if (loading) return <Skeleton className="w-full h-[54px]" />
-  if (!user) return <Button className="w-full text-base [&>svg]:size-5 h-[54px]" size="lg">
-    Войти
-    <LogInIcon />
+  if (!user) return <Button className="w-full text-base [&>svg]:size-5 h-[54px]" size="lg" asChild>
+    <Link to="/login">
+      Войти
+      <LogInIcon />
+    </Link>
   </Button>
 
   const username = user.username ?? "Пользователь";
