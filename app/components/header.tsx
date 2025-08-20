@@ -1,9 +1,9 @@
 import { Button } from "@yz13/ui/button";
 import { SidebarTrigger } from "@yz13/ui/sidebar";
-import { useThrottleFn } from "ahooks";
+import { useDebounceFn } from "ahooks";
 import { addDays, addMonths, addWeeks, addYears, format } from "date-fns";
 import { ru } from "date-fns/locale";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon, RotateCcwIcon } from "lucide-react";
 import { parseAsIsoDate, useQueryState } from "nuqs";
 import { useEffect } from "react";
 import ViewSelect from "./view-select";
@@ -50,20 +50,27 @@ export default function () {
     setSelected(new Date())
   }
 
-  const handleWheel = useThrottleFn((e: WheelEvent) => {
+
+  const handleWheel = useDebounceFn((e: WheelEvent) => {
     if (view !== "month") return;
     const isScrollUp = e.deltaY > 0;
-    if (isScrollUp) nextMonth()
-    else prevMonth()
-  }, { leading: true, trailing: true })
+    const isScrollDown = e.deltaY < 0;
+    if (isScrollUp) {
+      nextMonth()
+      e.preventDefault()
+    }
+    if (isScrollDown) {
+      prevMonth()
+      e.preventDefault()
+    }
+  }, { wait: 150 })
 
   useEffect(() => {
-
-    window.addEventListener("wheel", handleWheel.run)
+    window.addEventListener("wheel", handleWheel.run, { passive: false })
     return () => {
       window.removeEventListener("wheel", handleWheel.run)
     }
-  }, [selected])
+  }, [selected, view])
   return (
     <header className="w-full h-14 flex items-center justify-between px-3">
       <div className="flex items-center gap-2">
@@ -95,13 +102,18 @@ export default function () {
             view === "day" &&
             <>
               <span className="capitalize">{selected && format(selected, "EEEE, dd", { locale: ru })}</span>
-              <span className="text-muted-foreground">{selected && format(selected, "MMMM yyyy", { locale: ru })}</span>
+              <span className="text-muted-foreground">
+                {selected && format(selected, "MMMM", { locale: ru })}
+              </span>
+              <span className="md:inline hidden text-muted-foreground">
+                {selected && format(selected, "yyyy", { locale: ru })}
+              </span>
             </>
           }
         </div>
       </div>
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2">
+      <div className="flex items-center md:gap-4 gap-2">
+        <div className="md:flex hidden items-center md:gap-2 gap-1">
           <Button
             variant="outline"
             size="icon"
@@ -132,7 +144,8 @@ export default function () {
           variant="outline"
           onClick={toToday}
         >
-          Сегодня
+          <RotateCcwIcon />
+          <span className="md:inline hidden">Сегодня</span>
         </Button>
       </div>
     </header>

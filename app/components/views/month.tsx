@@ -31,7 +31,7 @@ export default function () {
 
   return (
     <>
-      <div className="w-full h-10 grid grid-cols-7 divide-x border-y *:py-2 *:px-4 [&>div]:last:border-r">
+      <div className="w-full h-10 grid grid-cols-7 divide-x border-y *:py-2 md:*:px-4 *:px-2 [&>div]:last:border-r">
         <div>Пн</div>
         <div>Вт</div>
         <div>Ср</div>
@@ -63,7 +63,7 @@ export default function () {
                     isSelected ? "bg-card" : "hover:bg-card"
                   )}
                 >
-                  <div className="h-8 py-1 px-3 flex items-center gap-1 justify-between">
+                  <div className="h-8 py-1 md:px-3 px-1.5 flex items-center gap-1 justify-between">
                     <div className="flex items-center h-full gap-1">
                       <div className={cn(
                         "h-full aspect-square flex items-center justify-center rounded-[4px] text-sm",
@@ -79,7 +79,7 @@ export default function () {
                       </div>
                       {
                         today &&
-                        <span className="text-xs text-muted-foreground">Сегодня</span>
+                        <span className="text-xs md:inline hidden text-muted-foreground">Сегодня</span>
                       }
                     </div>
                     <Button

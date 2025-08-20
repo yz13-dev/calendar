@@ -16,8 +16,8 @@ export default function () {
   return (
     <div className="w-full divide-y border-b">
       <div className="flex items-center h-10 *:h-full sticky top-0 bg-background z-10">
-        <div className="w-24 shrink-0 px-2 flex items-center justify-center">
-          <span className="text-sm">+0 UTC</span>
+        <div className="md:w-24 w-16 shrink-0 px-2 flex items-center justify-center">
+          <span className="text-xs text-end">+0 UTC</span>
         </div>
         <div className="w-full border-r *:px-2">
           <div
@@ -31,8 +31,8 @@ export default function () {
         </div>
       </div>
       <div className="flex items-center divide-x h-20 *:h-full">
-        <div className="w-24 p-2 flex justify-end shrink-0">
-          <span className="text-sm">Весь день</span>
+        <div className="md:w-24 w-16 p-2 flex justify-end shrink-0">
+          <span className="text-sm text-end">Весь день</span>
         </div>
         <div className="w-full border-r *:h-full">
           <div></div>
@@ -44,7 +44,7 @@ export default function () {
             const hours = hour.toString().padStart(2, "0");
             return (
               <div key={hour} className="flex items-center divide-x h-20 *:h-full">
-                <div className="w-24 flex justify-end shrink-0">
+                <div className="md:w-24 w-16 flex justify-end shrink-0">
                   <span className="px-2 w-full text-end bg-background text-sm relative -top-3">{hours}:00</span>
                 </div>
                 <div className="w-full border-r *:h-full">

@@ -8,7 +8,6 @@ import { useEffect } from "react";
 export default function () {
   const [date, setDate] = useQueryState("date", parseAsIsoDate);
   const [view] = useQueryState("view");
-  console.log(view)
 
   const selected = date ?? new Date();
 
