@@ -53,8 +53,8 @@ export default function () {
   const handleWheel = (e: WheelEvent) => {
     if (view !== "month") return;
     const isScrollUp = e.deltaY > 0;
-    if (isScrollUp) prevMonth()
-    else nextMonth()
+    if (isScrollUp) nextMonth()
+    else prevMonth()
   }
 
   useEffect(() => {
