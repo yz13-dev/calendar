@@ -1,12 +1,12 @@
 import { Button } from "@yz13/ui/button";
 import { SidebarTrigger } from "@yz13/ui/sidebar";
+import { useThrottleFn } from "ahooks";
 import { addDays, addMonths, addWeeks, addYears, format } from "date-fns";
 import { ru } from "date-fns/locale";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { parseAsIsoDate, useQueryState } from "nuqs";
 import { useEffect } from "react";
 import ViewSelect from "./view-select";
-
 
 export default function () {
 
@@ -50,18 +50,18 @@ export default function () {
     setSelected(new Date())
   }
 
-  const handleWheel = (e: WheelEvent) => {
+  const handleWheel = useThrottleFn((e: WheelEvent) => {
     if (view !== "month") return;
     const isScrollUp = e.deltaY > 0;
     if (isScrollUp) nextMonth()
     else prevMonth()
-  }
+  }, { leading: true, trailing: true })
 
   useEffect(() => {
 
-    window.addEventListener("wheel", handleWheel)
+    window.addEventListener("wheel", handleWheel.run)
     return () => {
-      window.removeEventListener("wheel", handleWheel)
+      window.removeEventListener("wheel", handleWheel.run)
     }
   }, [selected])
   return (
