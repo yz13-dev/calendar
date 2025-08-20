@@ -1,23 +1,16 @@
 import useUser from "@/hooks/use-user";
-import { Calendar } from "@yz13/ui/calendar";
 import { Checkbox } from "@yz13/ui/checkbox";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@yz13/ui/collapsible";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarSeparator } from "@yz13/ui/sidebar";
-import { ru } from "date-fns/locale";
 import { CalendarFoldIcon, CalendarIcon, ClockIcon, SettingsIcon } from "lucide-react";
-import { parseAsIsoDate, useQueryState } from "nuqs";
-import { useEffect } from "react";
+import DatePicker from "./date-picker";
 import User from "./user";
 
 
 export default function () {
 
-  const [date, setDate] = useQueryState("date", parseAsIsoDate);
   const [user, loading] = useUser();
 
-  useEffect(() => {
-    if (!date) setDate(new Date())
-  }, [date])
   return (
     <Sidebar>
       {/*<SidebarHeader>
@@ -26,15 +19,7 @@ export default function () {
         </SidebarMenu>
       </SidebarHeader>*/}
       <SidebarContent>
-        <Calendar
-          selected={date ?? undefined}
-          onSelect={date => {
-            setDate(date ?? null)
-          }}
-          mode="single"
-          className="w-full bg-transparent"
-          locale={ru}
-        />
+        <DatePicker />
         {
           loading
             ?

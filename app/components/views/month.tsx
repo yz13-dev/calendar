@@ -31,7 +31,7 @@ export default function () {
 
   return (
     <>
-      <div className="w-full h-10 grid grid-cols-7 divide-x border-b *:py-2 *:px-4 [&>div]:last:border-r">
+      <div className="w-full h-10 grid grid-cols-7 divide-x border-y *:py-2 *:px-4 [&>div]:last:border-r">
         <div>Пн</div>
         <div>Вт</div>
         <div>Ср</div>
