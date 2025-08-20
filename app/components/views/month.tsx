@@ -9,7 +9,7 @@ import { parseAsIsoDate, useQueryState } from "nuqs";
 export default function () {
 
   const [selected, setSelected] = useQueryState("date", parseAsIsoDate)
-  const [view, setView] = useQueryState("view")
+  const [_, setView] = useQueryState("view")
 
   const date = selected ? selected : new Date();
 
@@ -48,7 +48,9 @@ export default function () {
               const notSameMonth = selected ? !isSameMonth(selected, date) : false;
               const today = isToday(date);
 
-              const isSelected = selected ? format(date, "yyyy-MM-dd") === format(selected, "yyyy-MM-dd") : false;
+              const isSelected = selected
+                ? format(date, "yyyy-MM-dd") === format(selected, "yyyy-MM-dd")
+                : false;
 
               return (
                 <div
@@ -57,7 +59,7 @@ export default function () {
                   className={cn(
                     "w-full h-full divide-y transition-colors",
                     "last:border-r last:border-b group",
-                    notSameMonth ? "bg-muted" : "",
+                    notSameMonth ? "bg-muted/40" : "",
                     isSelected ? "bg-card" : "hover:bg-card"
                   )}
                 >

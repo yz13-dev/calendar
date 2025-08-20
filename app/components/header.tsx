@@ -25,7 +25,7 @@ export default function () {
   }
 
   return (
-    <header className="w-full h-14 flex items-center justify-between px-3 border-b">
+    <header className="w-full h-14 flex items-center justify-between px-3">
       <div className="flex items-center gap-2">
         <SidebarTrigger />
         <div className="flex items-center gap-1 *:text-xl *:font-medium">

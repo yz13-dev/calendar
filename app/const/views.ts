@@ -1,5 +1,5 @@
 
-
+export const defaultView = "month"
 export default [
   {
     "view": "day",

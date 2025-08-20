@@ -1,6 +1,7 @@
-import views from "@/const/views";
+import views, { defaultView } from "@/const/views";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@yz13/ui/select";
 import { useQueryState } from "nuqs";
+import { useEffect } from "react";
 
 
 
@@ -9,6 +10,9 @@ export default function () {
 
   const [view, setView] = useQueryState("view");
 
+  useEffect(() => {
+    if (!view) setView(defaultView)
+  }, [view])
   return (
     <Select value={view ?? undefined} onValueChange={setView}>
       <SelectTrigger className="min-w-28">
