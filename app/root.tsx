@@ -8,6 +8,7 @@ import {
 } from "react-router";
 
 import "@/styles/globals.css";
+import { TooltipProvider } from "@yz13/ui/tooltip";
 import { NuqsAdapter } from "nuqs/adapters/react-router/v7";
 import type { Route } from "./+types/root";
 
@@ -48,7 +49,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body className="inter-sans pixelify-sans jetbrains-mono">
         <NuqsAdapter>
-          {children}
+          <TooltipProvider>
+            {children}
+          </TooltipProvider>
         </NuqsAdapter>
         <ScrollRestoration />
         <Scripts />

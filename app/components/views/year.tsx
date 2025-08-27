@@ -1,4 +1,5 @@
 import { Calendar } from "@yz13/ui/calendar"
+import { cn } from "@yz13/ui/utils"
 import { eachMonthOfInterval } from "date-fns"
 import { ru } from "date-fns/locale"
 import { parseAsIsoDate, useQueryState } from "nuqs"
@@ -16,7 +17,11 @@ export default function () {
   const interval = eachMonthOfInterval({ start: firstMonth, end: lastMonth })
 
   return (
-    <div className="w-full grid lg:grid-cols-4 grid-cols-3 lg:grid-rows-3 grid-rows-4 gap-4 p-6">
+    <div className={cn(
+      "w-full grid gap-4 p-6",
+      "xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 grid-cols-1",
+      "xl:grid-rows-3 lg:grid-rows-4 sm:grid-rows-5 grid-rows-7"
+    )}>
       {
         interval
           .map(month => {

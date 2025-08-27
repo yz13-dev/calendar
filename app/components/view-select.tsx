@@ -15,7 +15,7 @@ export default function () {
   }, [view])
   return (
     <Select value={view ?? undefined} onValueChange={setView}>
-      <SelectTrigger className="md:min-w-28 min-w-24">
+      <SelectTrigger className="lg:min-w-28 min-w-24">
         <SelectValue />
       </SelectTrigger>
       <SelectContent>

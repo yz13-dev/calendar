@@ -57,7 +57,7 @@ export default function () {
                   onClick={() => setSelected(date)}
                   key={format(date, "yyyy-MM-dd")}
                   className={cn(
-                    "w-full h-full divide-y transition-colors",
+                    "w-full h-full transition-colors",
                     "last:border-r last:border-b group",
                     notSameMonth ? "bg-muted/40" : "",
                     isSelected ? "bg-card" : "hover:bg-card"
