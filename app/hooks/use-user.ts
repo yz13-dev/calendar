@@ -1,9 +1,9 @@
-import { getV1AuthMe } from "@yz13/api";
-import type { GetV1UsersUid200 } from "@yz13/api/types";
+import { getAuthV1Me } from "@yz13/api";
+import type { GetUserV1Uid200 } from "@yz13/api/types";
 import { useEffect } from "react";
 import { create } from "zustand";
 
-export type User = GetV1UsersUid200;
+export type User = GetUserV1Uid200;
 
 type State = {
   user: User | null;
@@ -31,7 +31,7 @@ export default function (): [User | null, boolean] {
   const refresh = async () => {
     setLoading(true)
     try {
-      const user = await getV1AuthMe()
+      const user = await getAuthV1Me()
       setUser(user)
     } catch (error) {
       console.error(error)
@@ -56,7 +56,7 @@ export const useRefreshUser = () => {
   const refresh = async () => {
     setLoading(true)
     try {
-      const user = await getV1AuthMe()
+      const user = await getAuthV1Me()
       setUser(user)
     } catch (error) {
       console.error(error)

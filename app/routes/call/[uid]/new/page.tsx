@@ -1,4 +1,4 @@
-import { getV1UsersUid } from "@yz13/api";
+import { getUserV1Uid } from "@yz13/api";
 import { Avatar, AvatarFallback, AvatarImage } from "@yz13/ui/avatar";
 import { cn } from "@yz13/ui/utils";
 import { ArrowRightIcon, GlobeIcon } from "lucide-react";
@@ -13,7 +13,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   try {
     const uid = params.uid;
 
-    const user = await getV1UsersUid(uid)
+    const user = await getUserV1Uid(uid)
 
     return { user }
 

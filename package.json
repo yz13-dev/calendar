@@ -11,7 +11,7 @@
   "dependencies": {
     "@react-router/node": "^7.7.0",
     "@react-router/serve": "^7.7.0",
-    "@yz13/api": "^0.1.28",
+    "@yz13/api": "^0.2.1",
     "@yz13/ui": "^0.1.7",
     "ahooks": "^3.9.3",
     "isbot": "^5.1.27",
@@ -22,7 +22,7 @@
     "react-dom": "^19.1.0",
     "react-hotkeys-hook": "^5.1.0",
     "react-router": "^7.7.0",
-    "zustand": "^5.0.7"
+    "zustand": "^5.0.8"
   },
   "devDependencies": {
     "@react-router/dev": "^7.7.0",

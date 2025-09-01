@@ -66,7 +66,7 @@ export default function () {
                   <div className="h-8 py-1 md:px-3 px-1.5 flex items-center gap-1 justify-between">
                     <div className="flex items-center h-full gap-1">
                       <div className={cn(
-                        "h-full aspect-square flex items-center justify-center rounded-[4px] text-sm",
+                        "h-full aspect-square flex items-center justify-center rounded-full text-sm",
                         today ? "bg-foreground" : isSelected ? "bg-secondary" : "bg-transparent"
                       )}>
                         <span className={cn(

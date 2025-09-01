@@ -1,7 +1,20 @@
+import { Button } from "@yz13/ui/button";
+import { ArrowLeftIcon } from "lucide-react";
+import { Link } from "react-router";
+
 export default function () {
   return (
     <div className="w-full min-h-dvh flex *:py-3 gap-3">
       <div className="w-1/4 pl-3 space-y-3">
+
+        <div className="flex items-center gap-2">
+          <Button variant="secondary" asChild>
+            <Link to="/">
+              <ArrowLeftIcon />
+              <span className="lg:inline hidden">Назад</span>
+            </Link>
+          </Button>
+        </div>
 
         <div className="w-full flex flex-row">
           <div className="size-20 flex flex-col items-center justify-center">
