@@ -26,7 +26,12 @@ export const useEventsStore = create<State & Actions>()((set) => ({
   setLoading: (loading: boolean) => set({ loading }),
 }));
 
-export default function useEvents(date?: string) {
+type EventsFilter = {
+  date?: string;
+  from?: string;
+  to?: string;
+}
+export default function useEvents({ date, from, to }: EventsFilter) {
 
   const [user] = useUser()
 
@@ -41,7 +46,11 @@ export default function useEvents(date?: string) {
     setLoading(true);
     try {
 
-      const events = await getCalendarV1EventsUserId(user.id)
+      const events = await getCalendarV1EventsUserId(user.id, {
+        date,
+        from,
+        to,
+      })
 
       if (events) setEvents(events);
 
@@ -54,7 +63,7 @@ export default function useEvents(date?: string) {
 
   useEffect(() => {
     if (user?.id) refresh();
-  }, [user])
+  }, [user, date, from, to]);
   return [events, loading] as const;
 }
 
