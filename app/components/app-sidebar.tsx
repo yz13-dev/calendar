@@ -1,5 +1,6 @@
 import useCalendars from "@/hooks/use-calendars";
 import useUser from "@/hooks/use-user";
+import { useVisibleCalendarsStore } from "@/stores/visible-calendars.store";
 import { Checkbox } from "@yz13/ui/checkbox";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@yz13/ui/collapsible";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarSeparator } from "@yz13/ui/sidebar";
@@ -13,7 +14,18 @@ export default function () {
 
   const [user, loading] = useUser();
 
-  const [calendars] = useCalendars()
+  const [calendars] = useCalendars();
+
+  const visible = useVisibleCalendarsStore(state => state.visible);
+  const setVisible = useVisibleCalendarsStore(state => state.setVisible);
+
+  const toggleInVisible = (calendar: string) => {
+    if (visible.includes(calendar)) {
+      setVisible(visible.filter(c => c !== calendar))
+    } else {
+      setVisible([...visible, calendar])
+    }
+  }
 
   return (
     <Sidebar>
@@ -105,11 +117,15 @@ export default function () {
                             {
                               calendars
                                 .map(calendar => {
-                                  const isShared = calendar.shared_with?.includes(user.id)
+                                  const isShared = calendar.shared_with?.includes(user.id);
+                                  const isVisible = visible.includes(calendar.id);
                                   return (
                                     <SidebarMenuSubItem key={`sidebar/${calendar.id}`}>
                                       <SidebarMenuSubButton>
-                                        <Checkbox />
+                                        <Checkbox
+                                          checked={isVisible}
+                                          onCheckedChange={() => toggleInVisible(calendar.id)}
+                                        />
                                         {
                                           isShared
                                             ? <CalendarSyncIcon size={16} />
