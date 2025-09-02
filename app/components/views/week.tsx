@@ -1,8 +1,12 @@
+import useEvents from "@/hooks/use-events";
+import { groupEvents } from "@/utils/group-events";
 import { getWeek } from "@/utils/week";
 import { cn } from "@yz13/ui/utils";
-import { eachDayOfInterval, format, isToday, isWeekend } from "date-fns";
+import { eachDayOfInterval, format, isToday, isWeekend, isWithinInterval, parseISO } from "date-fns";
 import { ru } from "date-fns/locale";
 import { parseAsIsoDate, useQueryState } from "nuqs";
+import { useMemo, type CSSProperties } from "react";
+import { EventRow, EventsChunk } from "../events";
 
 const HOUR_HEIGHT = 0;
 
@@ -12,15 +16,24 @@ export default function () {
 
   const selected = date ?? new Date()
 
-
   const week = getWeek(selected)
 
   const interval = eachDayOfInterval({ start: week.start, end: week.end });
 
   const hours = Array.from({ length: 24 }).map((_, i) => i)
 
+  const from = format(week.start, "yyyy-MM-dd");
+  const to = format(week.end, "yyyy-MM-dd");
+
+  const [events] = useEvents({ from, to })
+
   return (
-    <div className="w-full divide-y border-b">
+    <div
+      className="w-full divide-y border-y"
+      style={{
+        "--cell-height": 24
+      } as CSSProperties}
+    >
       <div className="flex items-start bg-background z-10">
         <div className="flex flex-col border-r">
           <div className="w-16 shrink-0 h-10 px-2 flex items-center justify-center">
@@ -54,7 +67,34 @@ export default function () {
                 const shortWeekday = format(date, "EEEEEE", { locale: ru });
                 const day = format(date, "dd", { locale: ru })
                 const isDateToday = isToday(date)
-                const isDateWeekend = isWeekend(date)
+                const isDateWeekend = isWeekend(date);
+
+                const filteredEvents = events
+                  .filter(event => {
+                    const start = parseISO(event.date_start);
+                    const end = parseISO(event.date_end);
+                    return isWithinInterval(date, { start, end });
+                  })
+
+                const groupedEvents = useMemo(() => {
+                  return groupEvents(filteredEvents)
+                }, [events])
+
+                const grouped = Object.values(groupedEvents);
+
+                const otherEvents = filteredEvents.filter(event => {
+                  if (event.all_day === true) return false;
+                  const notInGroup = grouped.every(group => !group.some(e => e.id === event.id));
+                  return notInGroup;
+                });
+
+                // Преобразуем в массив чанков
+                const eventChunks = Object.entries(groupedEvents).map(([time, events]) => ({
+                  time,
+                  events,
+                  count: events.length
+                }));
+
                 return (
                   <div className="w-full flex flex-col">
                     <div
@@ -73,26 +113,45 @@ export default function () {
                       </span>
                       <span className={cn("md:text-base text-xs", isDateToday ? "text-destructive" : "")}>{day}</span>
                     </div>
-                    <div className="w-full flex flex-col divide-y *:h-24 border-y">
+                    <div className="w-full flex flex-col divide-y border-y">
                       <div
                         className={cn(
+                          "h-24",
                           isDateWeekend ? "bg-muted/40" : "",
                         )}>
                       </div>
-                      {
-                        hours
-                          .map(hour => {
-                            const hours = hour.toString().padStart(2, "0");
-                            return (
-                              <div
-                                key={`${dateKey}/${hour}/main`}
-                                className={cn(
-                                  isDateWeekend ? "bg-muted/40" : "",
-                                )}>
-                              </div>
-                            )
-                          })
-                      }
+                      <div className="w-full relative">
+                        <div className="absolute inset-0 z-10 left-0 w-full">
+                          {
+                            otherEvents
+                              .map(event => {
+                                return <EventRow key={event.id} event={event} selected={selected} orientation="vertical" />
+                              })
+                          }
+                          {
+                            eventChunks
+                              .map((chunk, index) => {
+                                return <EventsChunk key={`${chunk.time}/${index}`} selected={selected} date={chunk.time} events={chunk.events} orientation="vertical" />
+                              })
+                          }
+                        </div>
+                        <div className="w-full *:h-24 divide-y">
+                          {
+                            hours
+                              .map(hour => {
+                                const hours = hour.toString().padStart(2, "0");
+                                return (
+                                  <div
+                                    key={`${dateKey}/${hour}/main`}
+                                    className={cn(
+                                      isDateWeekend ? "bg-muted/40" : "",
+                                    )}>
+                                  </div>
+                                )
+                              })
+                          }
+                        </div>
+                      </div>
                     </div>
                   </div>
                 )

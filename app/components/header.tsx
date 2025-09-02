@@ -10,7 +10,10 @@ import { useEffect } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import ViewSelect from "./view-select";
 
-export default function () {
+type Props = {
+  className?: string
+}
+export default function ({ className = "" }: Props) {
 
   const [selected, setSelected] = useQueryState("date", parseAsIsoDate);
   const [view, setView] = useQueryState("view");

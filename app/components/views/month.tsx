@@ -29,8 +29,8 @@ export default function () {
 
   const interval = eachDayOfInterval({ start: calendarFirstDay, end: calendarLastDay });
 
-  const from = format(firstDayOfMonth, "yyyy-MM-dd");
-  const to = format(lastDayOfMonth, "yyyy-MM-dd");
+  const from = format(calendarFirstDay, "yyyy-MM-dd");
+  const to = format(calendarLastDay, "yyyy-MM-dd");
   const [events] = useEvents({ from, to })
 
   return (
@@ -125,13 +125,40 @@ const DateCell = ({
           <ArrowRightIcon className="size-3" />
         </Button>
       </div>
-      <div className="h-[calc(100%-32px)] *:h-full grid grid-rows-5 gap-1 py-1 *:md:px-3 *:px-1.5">
+      <div className="h-[calc(100%-32px)] flex flex-col *:h-1/6 gap-1 py-1 *:md:px-3 *:px-1.5">
         {
           filtered
             .map(event => {
+              const summary = event.summary;
+
+              const start = parseISO(event.date_start);
+              const end = parseISO(event.date_end);
+
+              const dateKey = format(date, "yyyy-MM-dd");
+              const startKey = format(start, "yyyy-MM-dd");
+              const endKey = format(end, "yyyy-MM-dd");
+
+              const startOnDiffDay = dateKey === endKey && startKey !== endKey;
+              const endOnDiffDay = dateKey === startKey && startKey !== endKey;
+
               return (
                 <div key={event.id} className="w-full">
-                  <div className="w-full h-full bg-secondary rounded-[6px]"></div>
+                  <div className="w-full h-full bg-secondary rounded-[6px] px-2 flex justify-between items-center gap-2">
+                    <span className="text-xs text-foreground">{summary}</span>
+                    <span className="text-xs text-muted-foreground">
+                      {
+                        startOnDiffDay
+                          ? format(start, "dd.MM HH:mm")
+                          : format(start, "HH:mm")
+                      }
+                      -
+                      {
+                        endOnDiffDay
+                          ? format(end, "dd.MM HH:mm")
+                          : format(end, "HH:mm")
+                      }
+                    </span>
+                  </div>
                 </div>
               )
             })
