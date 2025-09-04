@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import { parseAsIsoDate, useQueryState } from "nuqs";
 import { useMemo, type CSSProperties } from "react";
 import { EventRow, EventsChunk } from "../events";
+import NewEvent from "../new-event";
 
 const HOUR_HEIGHT = 0;
 
@@ -74,34 +75,34 @@ export default function () {
         </div>
       </div>
       <div className="w-full relative">
-        <div className="absolute inset-0 z-10 left-16 w-[calc(100%-64px)]">
-          {
-            otherEvents
-              .map(event => {
-                return <EventRow key={event.id} event={event} selected={selected} />
-              })
-          }
-          {
-            eventChunks
-              .map((chunk, index) => {
-                return <EventsChunk key={`${chunk.time}/${index}`} selected={selected} date={chunk.time} events={chunk.events} />
-              })
-          }
-        </div>
+        {
+          otherEvents
+            .map(event => {
+              return <EventRow key={event.id} event={event} selected={selected} />
+            })
+        }
+        {
+          eventChunks
+            .map((chunk, index) => {
+              return <EventsChunk key={`${chunk.time}/${index}`} selected={selected} date={chunk.time} events={chunk.events} />
+            })
+        }
         <div className="w-full divide-y">
           {
             hours
               .map(hour => {
                 const hours = hour.toString().padStart(2, "0");
                 return (
-                  <div key={hour} className="flex items-center divide-x h-20 *:h-full">
-                    <div className="w-16 flex justify-end shrink-0">
-                      <span className="px-2 w-full text-end bg-background text-sm relative -top-3">{hours}:00</span>
+                  <NewEvent key={hour} side="bottom" align="start">
+                    <div className="flex items-center divide-x h-20 *:h-full">
+                      <div className="w-16 flex justify-end shrink-0">
+                        <span className="px-2 w-full text-end bg-background text-sm relative -top-3">{hours}:00</span>
+                      </div>
+                      <div className="w-full border-r *:h-full">
+                        <div></div>
+                      </div>
                     </div>
-                    <div className="w-full border-r *:h-full">
-                      <div></div>
-                    </div>
-                  </div>
+                  </NewEvent>
                 )
               })
           }

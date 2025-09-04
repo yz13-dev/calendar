@@ -93,7 +93,7 @@ export const EventRow = ({
         ...style
       }}
       className={cn(
-        "absolute p-2 w-full",
+        "absolute p-2 z-10 w-full",
         className
       )}
       {...props}

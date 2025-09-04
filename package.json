@@ -12,7 +12,7 @@
     "@react-router/node": "^7.7.0",
     "@react-router/serve": "^7.7.0",
     "@yz13/api": "^0.2.2",
-    "@yz13/ui": "^0.1.7",
+    "@yz13/ui": "^0.2.2",
     "ahooks": "^3.9.3",
     "isbot": "^5.1.27",
     "lucide-react": "^0.540.0",

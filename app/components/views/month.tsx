@@ -4,6 +4,7 @@ import { cn } from "@yz13/ui/utils";
 import { addDays, eachDayOfInterval, format, isSameMonth, isToday, isWithinInterval, lastDayOfMonth as lastDay, parseISO } from "date-fns";
 import { ArrowRightIcon } from "lucide-react";
 import { parseAsIsoDate, useQueryState } from "nuqs";
+import NewEvent from "../new-event";
 
 
 
@@ -85,89 +86,87 @@ const DateCell = ({
   })
 
   return (
-    <div
-      onClick={() => setSelected(date)}
-      className={cn(
-        "w-full h-full transition-colors",
-        "last:border-r last:border-b group",
-        notSameMonth ? "bg-muted/40" : "",
-        isSelected ? "bg-card" : "hover:bg-card"
-      )}
-    >
-      <div className="h-8 py-1 md:px-3 px-1.5 flex items-center gap-1 justify-between">
-        <div className="flex items-center h-full gap-1">
-          <div className={cn(
-            "h-full aspect-square flex items-center justify-center rounded-full text-sm",
-            today ? "bg-foreground" : isSelected ? "bg-secondary" : "bg-transparent"
-          )}>
-            <span className={cn(
-              "",
-              today ? "text-background" : isSelected ? "text-secondary-foreground" : notSameMonth ? "text-muted-foreground" : "text-foreground"
-            )}
-            >
-              {format(date, "dd")}
-            </span>
+    <NewEvent>
+      <div
+        onClick={() => setSelected(date)}
+        className={cn(
+          "w-full h-full transition-colors",
+          "last:border-r last:border-b group",
+          notSameMonth ? "bg-muted/40" : "",
+          isSelected ? "bg-card" : "hover:bg-card"
+        )}
+      >
+        <div className="h-8 py-1 md:px-3 px-1.5 flex items-center gap-1 justify-between">
+          <div className="flex items-center h-full gap-1">
+            <div className={cn(
+              "h-full aspect-square flex items-center justify-center rounded-full text-sm",
+              today ? "bg-foreground" : isSelected ? "bg-secondary" : "bg-transparent"
+            )}>
+              <span className={cn(
+                "",
+                today ? "text-background" : isSelected ? "text-secondary-foreground" : notSameMonth ? "text-muted-foreground" : "text-foreground"
+              )}
+              >
+                {format(date, "dd")}
+              </span>
+            </div>
+            {
+              today &&
+              <span className="text-xs md:inline hidden text-muted-foreground">Сегодня</span>
+            }
           </div>
+          <Button
+            size="sm"
+            variant="ghost"
+            className="size-6 group-hover:flex hidden"
+            onClick={() => {
+              setView("day")
+              setSelected(date)
+            }}
+          >
+            <ArrowRightIcon className="size-3" />
+          </Button>
+        </div>
+        <div className="h-[calc(100%-32px)] shrink-0 flex flex-col *:h-1/6 gap-1 py-1 *:md:px-3 *:px-1.5">
           {
-            today &&
-            <span className="text-xs md:inline hidden text-muted-foreground">Сегодня</span>
+            filtered
+              .map(event => {
+                const summary = event.summary;
+
+                const start = parseISO(event.date_start);
+                const end = parseISO(event.date_end);
+
+                const dateKey = format(date, "yyyy-MM-dd");
+                const startKey = format(start, "yyyy-MM-dd");
+                const endKey = format(end, "yyyy-MM-dd");
+
+                const startOnDiffDay = dateKey === endKey && startKey !== endKey;
+                const endOnDiffDay = dateKey === startKey && startKey !== endKey;
+
+                return (
+                  <div key={event.id} className="w-full">
+                    <div className="w-full h-full bg-secondary rounded-[6px] px-2 flex justify-between items-center gap-2">
+                      <span className="text-xs text-foreground">{summary}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {
+                          startOnDiffDay
+                            ? format(start, "dd.MM HH:mm")
+                            : format(start, "HH:mm")
+                        }
+                        -
+                        {
+                          endOnDiffDay
+                            ? format(end, "dd.MM HH:mm")
+                            : format(end, "HH:mm")
+                        }
+                      </span>
+                    </div>
+                  </div>
+                )
+              })
           }
         </div>
-        <Button
-          size="sm"
-          variant="ghost"
-          className="size-6 group-hover:flex hidden"
-          onClick={() => {
-            setView("day")
-            setSelected(date)
-          }}
-        >
-          <ArrowRightIcon className="size-3" />
-        </Button>
       </div>
-      <div className="h-[calc(100%-32px)] flex flex-col *:h-1/6 gap-1 py-1 *:md:px-3 *:px-1.5">
-        {
-          filtered
-            .map(event => {
-              const summary = event.summary;
-
-              const start = parseISO(event.date_start);
-              const end = parseISO(event.date_end);
-
-              const dateKey = format(date, "yyyy-MM-dd");
-              const startKey = format(start, "yyyy-MM-dd");
-              const endKey = format(end, "yyyy-MM-dd");
-
-              const startOnDiffDay = dateKey === endKey && startKey !== endKey;
-              const endOnDiffDay = dateKey === startKey && startKey !== endKey;
-
-              return (
-                <div key={event.id} className="w-full">
-                  <div className="w-full h-full bg-secondary rounded-[6px] px-2 flex justify-between items-center gap-2">
-                    <span className="text-xs text-foreground">{summary}</span>
-                    <span className="text-xs text-muted-foreground">
-                      {
-                        startOnDiffDay
-                          ? format(start, "dd.MM HH:mm")
-                          : format(start, "HH:mm")
-                      }
-                      -
-                      {
-                        endOnDiffDay
-                          ? format(end, "dd.MM HH:mm")
-                          : format(end, "HH:mm")
-                      }
-                    </span>
-                  </div>
-                </div>
-              )
-            })
-        }
-        {/*<div className="w-full"><div className="w-full h-full bg-secondary"></div></div>*/}
-        {/*<div className="w-full"><div className="w-full h-full bg-secondary"></div></div>*/}
-        {/*<div className="w-full"><div className="w-full h-full bg-secondary"></div></div>*/}
-        {/*<div className="w-full"><div className="w-full h-full bg-secondary"></div></div>*/}
-      </div>
-    </div>
+    </NewEvent>
   )
 }

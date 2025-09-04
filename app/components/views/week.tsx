@@ -7,6 +7,7 @@ import { ru } from "date-fns/locale";
 import { parseAsIsoDate, useQueryState } from "nuqs";
 import { useMemo, type CSSProperties } from "react";
 import { EventRow, EventsChunk } from "../events";
+import NewEvent from "../new-event";
 
 const HOUR_HEIGHT = 0;
 
@@ -96,13 +97,15 @@ export default function () {
                 }));
 
                 return (
-                  <div className="w-full flex flex-col">
+                  <div
+                    key={date.toISOString()}
+                    className="w-full flex flex-col"
+                  >
                     <div
-                      key={date.toISOString()}
                       className={cn(
                         "w-full flex md:flex-row h-10 flex-col items-center justify-center md:gap-1 gap-0",
                         isDateWeekend ? "bg-muted/40" : "bg-background/40",
-                        "sticky top-0 z-10 backdrop-blur-sm"
+                        "sticky top-0 z-20 backdrop-blur-sm"
                       )}
                     >
                       <span className="capitalize md:text-sm text-xs font-normal md:hidden inline text-muted-foreground">
@@ -121,32 +124,41 @@ export default function () {
                         )}>
                       </div>
                       <div className="w-full relative">
-                        <div className="absolute inset-0 z-10 left-0 w-full">
-                          {
-                            otherEvents
-                              .map(event => {
-                                return <EventRow key={event.id} event={event} selected={selected} orientation="vertical" />
-                              })
-                          }
-                          {
-                            eventChunks
-                              .map((chunk, index) => {
-                                return <EventsChunk key={`${chunk.time}/${index}`} selected={selected} date={chunk.time} events={chunk.events} orientation="vertical" />
-                              })
-                          }
-                        </div>
+                        {/*<div className="absolute inset-0 z-0 left-0 w-full">*/}
+                        {
+                          otherEvents
+                            .map(event => {
+                              return <EventRow key={event.id} event={event} selected={selected} orientation="vertical" />
+                            })
+                        }
+                        {
+                          eventChunks
+                            .map((chunk, index) => {
+                              return <EventsChunk
+                                key={`${chunk.time}/${index}`}
+                                selected={selected}
+                                date={chunk.time}
+                                events={chunk.events}
+                                orientation="vertical"
+                              />
+                            })
+                        }
+                        {/*</div>*/}
                         <div className="w-full *:h-24 divide-y">
                           {
                             hours
                               .map(hour => {
-                                const hours = hour.toString().padStart(2, "0");
+                                // const hours = hour.toString().padStart(2, "0");
                                 return (
-                                  <div
+                                  <NewEvent
                                     key={`${dateKey}/${hour}/main`}
-                                    className={cn(
-                                      isDateWeekend ? "bg-muted/40" : "",
-                                    )}>
-                                  </div>
+                                  >
+                                    <div
+                                      className={cn(
+                                        isDateWeekend ? "bg-muted/40" : "",
+                                      )}>
+                                    </div>
+                                  </NewEvent>
                                 )
                               })
                           }
