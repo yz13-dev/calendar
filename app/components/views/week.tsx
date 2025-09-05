@@ -7,7 +7,7 @@ import { ru } from "date-fns/locale";
 import { parseAsIsoDate, useQueryState } from "nuqs";
 import { useMemo, type CSSProperties } from "react";
 import { EventRow, EventsChunk } from "../events";
-import NewEvent from "../new-event";
+import { NewEventPopover } from "../new-event";
 
 const HOUR_HEIGHT = 0;
 
@@ -150,15 +150,16 @@ export default function () {
                               .map(hour => {
                                 // const hours = hour.toString().padStart(2, "0");
                                 return (
-                                  <NewEvent
+                                  <NewEventPopover
                                     key={`${dateKey}/${hour}/main`}
+                                    date={date}
                                   >
                                     <div
                                       className={cn(
                                         isDateWeekend ? "bg-muted/40" : "",
                                       )}>
                                     </div>
-                                  </NewEvent>
+                                  </NewEventPopover>
                                 )
                               })
                           }

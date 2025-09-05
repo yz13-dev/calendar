@@ -4,7 +4,7 @@ import { cn } from "@yz13/ui/utils";
 import { addDays, eachDayOfInterval, format, isSameMonth, isToday, isWithinInterval, lastDayOfMonth as lastDay, parseISO } from "date-fns";
 import { ArrowRightIcon } from "lucide-react";
 import { parseAsIsoDate, useQueryState } from "nuqs";
-import NewEvent from "../new-event";
+import { NewEventPopover } from "../new-event";
 
 
 
@@ -86,7 +86,7 @@ const DateCell = ({
   })
 
   return (
-    <NewEvent>
+    <NewEventPopover>
       <div
         onClick={() => setSelected(date)}
         className={cn(
@@ -167,6 +167,6 @@ const DateCell = ({
           }
         </div>
       </div>
-    </NewEvent>
+    </NewEventPopover>
   )
 }

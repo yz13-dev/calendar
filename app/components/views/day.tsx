@@ -5,7 +5,7 @@ import { format } from "date-fns";
 import { parseAsIsoDate, useQueryState } from "nuqs";
 import { useMemo, type CSSProperties } from "react";
 import { EventRow, EventsChunk } from "../events";
-import NewEvent from "../new-event";
+import { NewEventSheet } from "../new-event";
 
 const HOUR_HEIGHT = 0;
 
@@ -93,7 +93,7 @@ export default function () {
               .map(hour => {
                 const hours = hour.toString().padStart(2, "0");
                 return (
-                  <NewEvent key={hour} side="bottom" align="start">
+                  <NewEventSheet key={hour}>
                     <div className="flex items-center divide-x h-20 *:h-full">
                       <div className="w-16 flex justify-end shrink-0">
                         <span className="px-2 w-full text-end bg-background text-sm relative -top-3">{hours}:00</span>
@@ -102,7 +102,7 @@ export default function () {
                         <div></div>
                       </div>
                     </div>
-                  </NewEvent>
+                  </NewEventSheet>
                 )
               })
           }
